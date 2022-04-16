@@ -218,6 +218,7 @@ def export_onnx(path, batch_size, seq_len):
 lr = args.lr
 best_val_loss = None
 Val_Loss = []
+Val_Loss.append(0)
 # At any point you can hit Ctrl + C to break out of training early.
 try:
     for epoch in range(1, args.epochs+1):
@@ -242,7 +243,7 @@ except KeyboardInterrupt:
     print('-' * 89)
     print('Exiting from training early')
 
-xpoints = np.arange(1, len(Batch_Loss),200)
+xpoints = np.arange(0, len(Batch_Loss),200)
 ypoints = np.array(Batch_Loss)
 print(xpoints)
 plt.plot(xpoints, ypoints)
