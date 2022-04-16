@@ -1,11 +1,14 @@
 # coding: utf-8
 import argparse
+import imp
 import time
 import math
 import os
 import torch
 import torch.nn as nn
 import torch.onnx
+import numpy as np
+import matplotlib as plt
 
 import data
 import model
@@ -155,7 +158,8 @@ def evaluate(data_source):
             total_loss += len(data) * criterion(output, targets).item()
     return total_loss / (len(data_source) - 1)
 
-
+Train_Loss = []
+Batch_Loss = []
 def train():
     # Turn on training mode which enables dropout.
     model.train()
@@ -184,7 +188,7 @@ def train():
             p.data.add_(p.grad, alpha=-lr)
 
         total_loss += loss.item()
-
+        Loss = Loss + total_loss
         if batch % args.log_interval == 0 and batch > 0:
             cur_loss = total_loss / args.log_interval
             elapsed = time.time() - start_time
@@ -193,9 +197,11 @@ def train():
                 epoch, batch, len(train_data) // args.bptt, lr,
                 elapsed * 1000 / args.log_interval, cur_loss, math.exp(cur_loss)))
             total_loss = 0
+            Batch_Loss.append(cur_loss)
             start_time = time.time()
         if args.dry_run:
             break
+    Train_Loss.append(Loss/(train_data.size(0) - 1))
 
 
 def export_onnx(path, batch_size, seq_len):
@@ -210,7 +216,7 @@ def export_onnx(path, batch_size, seq_len):
 # Loop over epochs.
 lr = args.lr
 best_val_loss = None
-
+Val_Loss = []
 # At any point you can hit Ctrl + C to break out of training early.
 try:
     for epoch in range(1, args.epochs+1):
@@ -222,6 +228,7 @@ try:
                 'valid ppl {:8.2f}'.format(epoch, (time.time() - epoch_start_time),
                                            val_loss, math.exp(val_loss)))
         print('-' * 89)
+        Val_Loss.append(val_loss)
         # Save the model if the validation loss is the best we've seen so far.
         if not best_val_loss or val_loss < best_val_loss:
             with open(args.save, 'wb') as f:
@@ -233,6 +240,16 @@ try:
 except KeyboardInterrupt:
     print('-' * 89)
     print('Exiting from training early')
+
+xpoints = np.array([1, len(Batch_Loss)])
+ypoints = np.array(Batch_Loss)
+
+plt.plot(xpoints, ypoints)
+plt.show()
+
+plt.title("Batch Training Loss")
+plt.xlabel("Number Of Samples")
+plt.ylabel("Loss")
 
 # Load the best saved model.
 with open(args.save, 'rb') as f:
