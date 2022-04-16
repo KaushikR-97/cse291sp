@@ -164,6 +164,7 @@ def train():
     # Turn on training mode which enables dropout.
     model.train()
     total_loss = 0.
+    Loss = 0
     start_time = time.time()
     ntokens = len(corpus.dictionary)
     if args.model != 'Transformer':
