@@ -267,6 +267,8 @@ if len(args.onnx_export) > 0:
 xpoints = np.arange(0, 200*len(Batch_Loss),200)
 ypoints = np.array(Batch_Loss)
 
+print(xpoints)
+print(ypoints)
 plt.title("Batch Training Loss")
 plt.xlabel("Number Of Samples")
 plt.ylabel("Loss")
