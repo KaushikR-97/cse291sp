@@ -245,13 +245,12 @@ except KeyboardInterrupt:
 
 xpoints = np.arange(0, 200*len(Batch_Loss),200)
 ypoints = np.array(Batch_Loss)
-print(xpoints)
-plt.plot(xpoints, ypoints)
-plt.show()
 
 plt.title("Batch Training Loss")
 plt.xlabel("Number Of Samples")
 plt.ylabel("Loss")
+plt.plot(xpoints, ypoints)
+plt.show()
 
 # Load the best saved model.
 with open(args.save, 'rb') as f:
