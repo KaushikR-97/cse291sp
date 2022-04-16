@@ -243,15 +243,6 @@ except KeyboardInterrupt:
     print('-' * 89)
     print('Exiting from training early')
 
-xpoints = np.arange(0, 200*len(Batch_Loss),200)
-ypoints = np.array(Batch_Loss)
-
-plt.title("Batch Training Loss")
-plt.xlabel("Number Of Samples")
-plt.ylabel("Loss")
-plt.plot(xpoints, ypoints)
-plt.show()
-
 # Load the best saved model.
 with open(args.save, 'rb') as f:
     model = torch.load(f)
@@ -271,3 +262,13 @@ print('=' * 89)
 if len(args.onnx_export) > 0:
     # Export the model in ONNX format.
     export_onnx(args.onnx_export, batch_size=1, seq_len=args.bptt)
+
+
+xpoints = np.arange(0, 200*len(Batch_Loss),200)
+ypoints = np.array(Batch_Loss)
+
+plt.title("Batch Training Loss")
+plt.xlabel("Number Of Samples")
+plt.ylabel("Loss")
+plt.plot(xpoints, ypoints)
+plt.show()
