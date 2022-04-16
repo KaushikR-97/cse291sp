@@ -8,7 +8,7 @@ import torch
 import torch.nn as nn
 import torch.onnx
 import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 import data
 import model
