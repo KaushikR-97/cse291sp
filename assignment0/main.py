@@ -243,7 +243,7 @@ except KeyboardInterrupt:
     print('-' * 89)
     print('Exiting from training early')
 
-xpoints = np.arange(0, len(Batch_Loss),200)
+xpoints = np.arange(0, 200*len(Batch_Loss),200)
 ypoints = np.array(Batch_Loss)
 print(xpoints)
 plt.plot(xpoints, ypoints)
