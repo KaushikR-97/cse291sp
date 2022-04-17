@@ -203,7 +203,7 @@ def train():
             start_time = time.time()
         if args.dry_run:
             break
-    Train_Loss.append(Loss/(train_data.size(0) - 1))
+    Train_Loss.append(Loss/(len(train_data) - 1))
 
 
 def export_onnx(path, batch_size, seq_len):
