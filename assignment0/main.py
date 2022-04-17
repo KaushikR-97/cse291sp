@@ -160,6 +160,7 @@ def evaluate(data_source):
 
 Train_Loss = []
 Batch_Loss = []
+
 def train():
     # Turn on training mode which enables dropout.
     model.train()
@@ -218,7 +219,7 @@ def export_onnx(path, batch_size, seq_len):
 lr = args.lr
 best_val_loss = None
 Val_Loss = []
-Val_Loss.append(0)
+
 # At any point you can hit Ctrl + C to break out of training early.
 try:
     for epoch in range(1, args.epochs+1):
@@ -264,7 +265,10 @@ if len(args.onnx_export) > 0:
     export_onnx(args.onnx_export, batch_size=1, seq_len=args.bptt)
 
 
-xpoints = np.arange(0, 200*len(Batch_Loss),200)
+print(Batch_Loss)
+print(Val_Loss)
+print(Train_Loss)
+xpoints = np.arange(200, 200*len(Batch_Loss)+200,200)
 ypoints = np.array(Batch_Loss)
 
 print(xpoints)
